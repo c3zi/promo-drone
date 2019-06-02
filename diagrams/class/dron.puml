@@ -1,0 +1,138 @@
+@startuml
+DroneSocketClient <|-- DroneClientInterface
+DroneTransmitter *-- DroneSocketClient
+EngineCollection o-- Engine
+DroneReceiverInterface <|-- DroneRadioReceiver
+Drone *-- DroneComputer
+Drone *-- DroneRadioReceiver
+Drone *-- EngineCollection
+DroneComputer *-- EngineController
+DroneComputer *-- Camera
+DroneClientInterface o-- Command
+EngineController *-- Engine
+
+class DroneTransmitter
+{
+    constructor(DroneClientInterface $client)
+    +powerOn()
+    +moveUp()
+    +moveDown()
+    +moveRight()
+    +moveLeft()
+    +faster()
+    +slower()
+    +takePicture()
+    +startFollowingLeader()
+    +stopFollowingLeader()
+}
+
+class Command
+{
+    -string type
+    -string name
+}
+
+interface DroneClientInterface
+{
+    +send(Command command)
+}
+
+class DroneSocketClient
+{
+    +send(Command command)
+}
+
+
+interface DroneReceiverInterface
+{
+    +listen()
+    #parseCommand()
+    #moveUp()
+    #moveDown()
+    #moveLeft()
+    #moveRight()
+    #faster()
+    #slower()
+    #takePicture()
+    #followLeader(distance, height)
+    #stopFollowingLeader()
+    #powerOff()
+    #powerOn()
+}
+
+class DroneRadioReceiver
+{
+    +listen()
+    #parseCommand()
+    #moveUp()
+    #moveDown()
+    #moveLeft()
+    #moveRight()
+    #faster()
+    #slower()
+    #takePicture()
+    #followLeader(distance, height)
+    #stopFollowingLeader()
+    #powerOff()
+    #powerOn()
+}
+
+
+class DroneComputer
+{
+    constructor(EngineController controller, Camera camera)
+    +findAffectedElements
+    +keepPosition(distance, height)
+    +stopKeepingPosition()
+    +moveUp()
+    +moveDown()
+    +moveLeft()
+    +moveRight()
+    +faster()
+    +slower()
+    +takePicture()
+    +powerOff()
+    +powerOn()
+}
+
+class EngineCollection
+{
+    constructor(Engine[] engines)
+}
+
+class Engine
+{
+    -array dimension
+    -float voltage
+    -float kv
+    -float resistance
+    -float weight
+
+    +increasePower(int level)
+    +decreasePower(int level)
+}
+
+class Drone
+{
+    constructor(DroneComputer computer, DroneReceiver receiver, EngineCollection collection)
+    +connect()
+    +disconnect()
+    #turnOnReceiver()
+    #sendEnginesToDroneController()
+    #turnOnCamera()
+    #subscribeReceiver()
+    #sendToComputer(Command command)
+}
+
+class EngineController
+{
+    +findAffectedEngines
+    +updateEngine(Engine engine, array newParamters)
+}
+
+class Camera
+{
+    +takePicture()
+}
+
+@enduml

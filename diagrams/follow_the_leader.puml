@@ -1,0 +1,36 @@
+@startuml
+hide footbox
+title Follow the leader
+
+participant DroneTransmitter
+participant DroneClient
+participant Drone
+participant DroneReceiver
+participant DroneComputer
+participant EngineController
+participant Engine
+
+group Transmitter
+DroneTransmitter -> DroneTransmitter: powerOn
+DroneTransmitter -> DroneClient: startFollowingLeader(distance, height)
+end
+DroneClient -> Drone: send(Command)
+group Drone
+Drone -> DroneReceiver: send(Command)
+activate DroneReceiver
+DroneReceiver -> DroneReceiver: parseCommand
+DroneReceiver -> Drone: parsedCommand
+deactivate
+activate Drone
+Drone -> DroneComputer: sendCommandToComputer(Command)
+deactivate
+activate DroneComputer
+DroneComputer -> DroneComputer: findAffectedElements
+DroneComputer -> EngineController: keepPosition(distance, height)
+deactivate
+activate EngineController
+EngineController -> EngineController: findAffectedEngines
+EngineController -> Engine: updateEngine(distance, height)
+deactivate
+end
+@enduml
