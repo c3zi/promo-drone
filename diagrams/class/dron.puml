@@ -132,6 +132,8 @@ class EngineController
 
 class Camera
 {
+    +turnOn()
+    +turnOff()
     +takePicture()
 }
 
