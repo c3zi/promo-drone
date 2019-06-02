@@ -91,6 +91,8 @@ class DroneComputer
     +faster()
     +slower()
     +takePicture()
+    +startRecording()
+    +stopRecording()
     +powerOff()
     +powerOn()
 }
@@ -135,6 +137,8 @@ class Camera
     +turnOn()
     +turnOff()
     +takePicture()
+    +startRecording()
+    +stopRecording()
 }
 
 @enduml
